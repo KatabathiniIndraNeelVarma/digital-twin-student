@@ -1,0 +1,46 @@
+server:
+  port: ${PORT:8080}
+spring:
+  application:
+    name: digital-twin-student
+  datasource:
+    url: ${DATABASE_URL:jdbc:mysql://localhost:3306/digital_twin?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    username: ${DATABASE_USERNAME:digital_twin}
+    password: ${DATABASE_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+app:
+  jwt:
+    secret: ${JWT_SECRET:}
+    expiration-ms: ${JWT_EXPIRATION:3600000}
+  cors:
+    allowed-origin: ${FRONTEND_URL:http://localhost:5173}
+  twin:
+    weights:
+      academic: 0.35
+      attendance: 0.15
+      skills: 0.20
+      learning: 0.15
+      projects: 0.10
+      activities: 0.05
+    classification:
+      excellent: 90
+      good: 80
+      average: 65
+      needs-improvement: 50
+    attendance-risk: 75
+    academic-gap: 60
